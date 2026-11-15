@@ -1,0 +1,28 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+Student Registration
+{% endblock %}
+
+{% block content %}
+
+<h2>Create Your Account</h2>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">
+        Register
+    </button>
+
+</form>
+
+<p>
+    Already have an account?
+    <a href="{% url 'login' %}">Login here</a>
+</p>
+
+{% endblock %}

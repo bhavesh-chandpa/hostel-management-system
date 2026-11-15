@@ -1,0 +1,36 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+Leave Application
+{% endblock %}
+
+
+{% block content %}
+
+<h2>Student Leave Application</h2>
+
+{% if success %}
+
+<h3>Application Submitted!</h3>
+
+<p>Thank you, {{ student_name }}.</p>
+
+<p>Your form was successfully validated.</p>
+
+{% else %}
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">
+        Submit Application
+    </button>
+
+</form>
+
+{% endif %}
+
+{% endblock %}

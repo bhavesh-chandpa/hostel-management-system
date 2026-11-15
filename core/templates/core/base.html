@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -7,13 +8,50 @@
         Hostel Management System
         {% endblock %}
     </title>
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
 </head>
 
 <body>
 
     <header>
+
         <h1>Hostel Management System</h1>
         <hr>
+
+        <nav>
+
+            <a href="{% url 'home' %}">Home</a>
+
+            {% if user.is_authenticated %}
+
+            <span>
+                Welcome, {{ user.username }}
+            </span>
+
+            <a href="{% url 'student_dashboard' %}">
+                Dashboard
+            </a>
+
+            <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+
+                {% csrf_token %}
+
+                <button type="submit">
+                    Logout
+                </button>
+
+            </form>
+
+            {% else %}
+
+            <a href="{% url 'login' %}">Login</a>
+
+            <a href="{% url 'register' %}">Register</a>
+
+            {% endif %}
+
+        </nav>
+
     </header>
 
     <main>
@@ -27,7 +65,7 @@
         <hr>
         <p>Hostel Management System</p>
     </footer>
-
+    <script src="{% static 'core/js/script.js' %}" defer></script>
 </body>
 
 </html>

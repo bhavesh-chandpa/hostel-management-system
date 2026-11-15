@@ -1,0 +1,55 @@
+/* General page styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    color: #333;
+}
+
+
+/* Header */
+
+header {
+    background-color: #243b64;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+
+/* Main content */
+
+main {
+    background-color: white;
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 10px;
+}
+
+
+/* Headings */
+
+h2 {
+    color: #243b64;
+}
+
+h3 {
+    color: #444;
+}
+
+
+/* Subject list */
+
+li {
+    padding: 6px;
+}
+
+
+/* Footer */
+
+footer {
+    text-align: center;
+    padding: 15px;
+    color: #777;
+}

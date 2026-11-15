@@ -39,7 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
+    # Hostel Management System applications
+'core',
+'accounts',
+'rooms',
+'attendance',
+'leave_management',
+'complaints',
+'notices',
+'fees',
 ]
 
 MIDDLEWARE = [
@@ -77,8 +85,19 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mysql.connector.django',
+
+        'NAME': os.environ["DB_NAME"],
+        'USER': os.environ["DB_USER"],
+        'PASSWORD': os.environ["DB_PASSWORD"],
+
+        'HOST': os.environ.get("DB_HOST", "127.0.0.1"),
+        'PORT': os.environ.get("DB_PORT", "3307"),
+
+        'OPTIONS': {
+            'use_pure': True,
+            'charset': 'utf8mb4',
+        }
     }
 }
 
@@ -128,3 +147,9 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
+
+LOGIN_URL = 'login'
+
+LOGIN_REDIRECT_URL = 'student_dashboard'
+
+LOGOUT_REDIRECT_URL = 'home'
