@@ -30,6 +30,14 @@ class Command(BaseCommand):
             "home_address": "Demo Address, Ahmedabad",
             "student_status": Student.StudentStatus.ACTIVE, "hostel_admission_date": today,
         })
+        # A pending application gives the Rector a record to review in demonstrations.
+        Student.objects.get_or_create(roll_number="DEMO-PENDING-001", defaults={
+            "full_name": "Demo Applicant", "email": "applicant@example.com",
+            "phone_number": "9999990005", "date_of_birth": date(2006, 2, 2),
+            "degree": "BSc CS", "year_of_study": 2, "guardian_contact": "9999990006",
+            "home_address": "Demo Applicant Address, Ahmedabad",
+            "student_status": Student.StudentStatus.PENDING,
+        })
 
         demo_users = [
             ("demo.rector", "DemoRector@123", User.Role.RECTOR, {"staff": rector}),

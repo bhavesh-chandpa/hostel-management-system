@@ -25,6 +25,10 @@ A Django-based hostel administration portal for St. Xavier's Men's Hostel, Ahmed
 - Access the Django admin site using an Admin-role account.
 - Manage student/staff profiles and login accounts through the custom admin configuration.
 
+## Screenshots
+
+The release ZIP includes screenshots captured from the running demo site by the GitHub Actions workflow. The captures include the public homepage, student dashboard, room management, leave workflows, complaints and notices.
+
 ## Technology stack
 
 - Python 3.14
@@ -46,6 +50,7 @@ attendance/           Attendance model and Django admin
 fees/                 Fee models and Django admin
 core/                 Public pages, login, registration review and dashboard
 config/               Django settings and root URL configuration
+screenshots/          UI captures generated for the release archive
 ~~~
 
 ## Setup (Windows PowerShell)
@@ -104,7 +109,7 @@ The seed_demo command creates the following accounts when they do not already ex
 | Assistant Rector | demo.assistant | DemoAssistant@123 |
 | Student | demo.student | DemoStudent@123 |
 
-These credentials are for local demonstration only. Change or delete them before deployment.
+The command also creates one active demo student, one pending applicant, room 101, a sample leave application, a sample complaint and a welcome notice. These credentials and records are for local demonstration only. Change or remove them before deployment.
 
 ## Admin account setup
 

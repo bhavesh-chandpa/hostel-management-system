@@ -1,6 +1,8 @@
+from django.core.management import call_command
 from django.test import TestCase
 from django.urls import reverse
-from accounts.models import Student
+from accounts.models import Student, User
+
 
 class PublicRegistrationTests(TestCase):
     def test_homepage_loads(self):
@@ -20,3 +22,9 @@ class PublicRegistrationTests(TestCase):
         student = Student.objects.get(email="applicant@example.com")
         self.assertEqual(student.student_status, Student.StudentStatus.PENDING)
         self.assertNotIn("_auth_user_id", self.client.session)
+
+    def test_demo_seed_command_is_repeatable(self):
+        call_command("seed_demo")
+        call_command("seed_demo")
+        self.assertEqual(User.objects.filter(username="demo.rector").count(), 1)
+        self.assertEqual(Student.objects.filter(roll_number="DEMO-PENDING-001").count(), 1)

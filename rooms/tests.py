@@ -43,3 +43,8 @@ class RoomWorkflowTests(TestCase):
         response = self.client.get(reverse("student_dashboard"))
         self.assertContains(response, "Room 202")
         self.assertContains(response, "Bed A")
+
+    def test_student_cannot_access_rector_room_management(self):
+        self.client.force_login(self.student)
+        response = self.client.get(reverse("room_management"))
+        self.assertEqual(response.status_code, 403)
