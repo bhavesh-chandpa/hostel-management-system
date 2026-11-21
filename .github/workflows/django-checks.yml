@@ -30,11 +30,24 @@ jobs:
         run: python manage.py makemigrations --check --dry-run
       - name: Run tests
         run: python manage.py test
-      - name: Package source archive
-        if: success()
-        run: git archive --format=zip --output=hostel-management-system-mvp.zip HEAD
+      - name: Install Playwright and Chromium
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+      - name: Prepare demo database
+        run: |
+          python manage.py migrate --noinput
+          python manage.py seed_demo
+      - name: Capture interface screenshots
+        run: python scripts/capture_screenshots.py
+      - name: Package source and screenshots
+        run: |
+          mkdir -p release/hostel-management-system
+          git archive HEAD | tar -x -C release/hostel-management-system
+          cp -R screenshots release/hostel-management-system/screenshots
+          cd release
+          zip -rq ../hostel-management-system-mvp.zip hostel-management-system
       - name: Upload project ZIP
-        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: hostel-management-system-mvp
