@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.contrib.auth.forms import UserChangeForm as DjangoUserChangeForm
 from django.contrib.auth.forms import UserCreationForm as DjangoUserCreationForm
+from django.core.exceptions import ValidationError
 
 from .models import Staff, Student, User
 
@@ -32,18 +33,18 @@ class HostelUserCreationForm(DjangoUserCreationForm):
         cleaned = super().clean()
         student, staff, role = cleaned.get("student"), cleaned.get("staff"), cleaned.get("role")
         if bool(student) == bool(staff):
-            raise admin.forms.ValidationError("Select exactly one Student or Staff profile.")
+            raise ValidationError("Select exactly one Student or Staff profile.")
         if student and role != User.Role.STUDENT:
-            raise admin.forms.ValidationError("A Student profile must have the Student role.")
+            raise ValidationError("A Student profile must have the Student role.")
         if staff and role == User.Role.STUDENT:
-            raise admin.forms.ValidationError("A Staff profile cannot have the Student role.")
+            raise ValidationError("A Staff profile cannot have the Student role.")
         return cleaned
 
 
 class HostelUserChangeForm(DjangoUserChangeForm):
     class Meta(DjangoUserChangeForm.Meta):
         model = User
-        fields = ("username", "student", "staff", "role", "account_status", "is_superuser", "groups", "user_permissions")
+        fields = ("username", "password", "student", "staff", "role", "account_status", "is_superuser", "groups", "user_permissions")
 
 
 @admin.register(User)
@@ -64,4 +65,3 @@ class UserAdmin(DjangoUserAdmin):
         (None, {"classes": ("wide",), "fields": ("username", "student", "staff", "role", "account_status", "password1", "password2")}),
     )
     filter_horizontal = ("groups", "user_permissions")
-    readonly_fields = ("last_login",)
