@@ -1,50 +1,41 @@
 from django import forms
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from .models import Student
 
 
-class RegisterForm(UserCreationForm):
+class StudentRegistrationForm(forms.ModelForm):
 
-    email = forms.EmailField(required=True)
-
-    class Meta(UserCreationForm.Meta):
-
-        model = User
+    class Meta:
+        model = Student
 
         fields = [
-            'username',
-            'email'
+            'full_name',
+            'email',
+            'phone_number',
+            'date_of_birth',
+            'roll_number',
+            'degree',
+            'year_of_study',
+            'guardian_contact',
+            'home_address',
         ]
 
+        widgets = {
+            'date_of_birth': forms.DateInput(
+                attrs={'type': 'date'}
+            ),
 
-class LeaveApplicationForm(forms.Form):
+            'home_address': forms.Textarea(
+                attrs={
+                    'rows': 3,
+                    'placeholder': 'Enter your permanent address'
+                }
+            ),
 
-    student_name = forms.CharField(
-        max_length=100,
-        label="Student Name"
-    )
+            'year_of_study': forms.NumberInput(
+                attrs={'min': 1}
+            ),
+        }
 
-    room_number = forms.IntegerField(
-        min_value=1,
-        label="Room Number"
-    )
-
-    reason = forms.CharField(
-        max_length=500,
-        widget=forms.Textarea(attrs={
-            'rows': 4,
-            'placeholder': 'Enter reason for leave'
-        })
-    )
-
-    start_date = forms.DateField(
-        widget=forms.DateInput(attrs={
-            'type': 'date'
-        })
-    )
-
-    end_date = forms.DateField(
-        widget=forms.DateInput(attrs={
-            'type': 'date'
-        })
-    )
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        return email.lower()

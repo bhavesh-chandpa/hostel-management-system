@@ -1,0 +1,49 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+Registration Submitted
+{% endblock %}
+
+{% block content %}
+
+<section class="form-page">
+
+    <div class="form-card success-card">
+
+        <span class="success-icon">✓</span>
+
+        <h1>Application Submitted!</h1>
+
+        <p>
+            Thank you, {{ student.full_name }}.
+            Your hostel registration application has been received.
+        </p>
+
+        <div class="application-details">
+
+            <p>
+                <strong>Application ID:</strong>
+                {{ student.student_id }}
+            </p>
+
+            <p>
+                <strong>Status:</strong>
+                <span class="pending-status">Pending Review</span>
+            </p>
+
+        </div>
+
+        <p class="form-note">
+            The Hostel Rector will review your application.
+            You can contact the hostel office for further information.
+        </p>
+
+        <a href="{% url 'home' %}" class="primary-button">
+            Back to Homepage
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

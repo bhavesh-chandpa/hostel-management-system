@@ -39,16 +39,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Hostel Management System applications
-'core',
-'accounts',
-'rooms',
-'attendance',
-'leave_management',
-'complaints',
-'notices',
-'fees',
+
+    # Project applications
+    'core',
+    'accounts',
+    'rooms',
+    'attendance',
+    'leave_management',
+    'complaints',
+    'notices',
+    'fees',
 ]
+
+AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

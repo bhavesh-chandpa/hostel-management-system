@@ -34,4 +34,15 @@ urlpatterns = [
         views.logout_view,
         name='logout'
     ),
+    path(
+        'rector/registrations/',
+        views.registration_requests,
+        name='registration_requests'
+    ),
+
+    path(
+        'rector/registrations/<int:student_id>/',
+        views.review_registration,
+        name='review_registration'
+    ),
 ]

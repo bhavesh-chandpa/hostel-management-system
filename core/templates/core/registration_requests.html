@@ -1,0 +1,79 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+Registration Requests | Hostel Management System
+{% endblock %}
+
+{% block content %}
+
+<section class="section section-light">
+
+    <div class="container">
+
+        <div class="section-heading">
+            <span class="section-label">RECTOR PANEL</span>
+            <h2>Registration Requests</h2>
+            <p>Review and manage pending hostel admission applications.</p>
+        </div>
+
+        {% if students %}
+
+        <div class="request-list">
+
+            {% for student in students %}
+
+            <article class="request-card">
+
+                <div class="request-info">
+
+                    <span class="section-label">
+                        APPLICATION #{{ student.student_id }}
+                    </span>
+
+                    <h3>{{ student.full_name }}</h3>
+
+                    <p>{{ student.email }}</p>
+
+                    <p>
+                        Roll Number: {{ student.roll_number }}
+                    </p>
+
+                    <p>
+                        Submitted:
+                        {{ student.submitted_at|date:"d M Y, h:i A" }}
+                    </p>
+
+                    <span class="pending-status">
+                        {{ student.student_status }}
+                    </span>
+
+                </div>
+
+                <div class="request-action">
+
+                    <a href="{% url 'review_registration' student.student_id %}" class="primary-button">
+                        Review Application →
+                    </a>
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+            <h3>No Pending Applications</h3>
+            <p>There are currently no student registration requests to review.</p>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+{% endblock %}

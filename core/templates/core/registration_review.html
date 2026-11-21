@@ -1,0 +1,96 @@
+{% extends "core/base.html" %}
+
+{% block title %}
+Review Application | Hostel Management System
+{% endblock %}
+
+{% block content %}
+
+<section class="form-page">
+
+    <div class="form-card">
+
+        <span class="section-label">RECTOR PANEL</span>
+
+        <h1>Review Student Application</h1>
+
+        <p class="form-description">
+            Application #{{ student.student_id }}
+        </p>
+
+        <!-- Student Details -->
+
+        <div class="application-details">
+
+            <h3>Student Information</h3>
+
+            <p><strong>Full Name:</strong> {{ student.full_name }}</p>
+            <p><strong>Email:</strong> {{ student.email }}</p>
+            <p><strong>Phone:</strong> {{ student.phone_number }}</p>
+            <p><strong>Date of Birth:</strong> {{ student.date_of_birth }}</p>
+            <p><strong>Roll Number:</strong> {{ student.roll_number }}</p>
+            <p><strong>Degree:</strong> {{ student.degree }}</p>
+            <p><strong>Year of Study:</strong> {{ student.year_of_study }}</p>
+            <p><strong>Guardian Contact:</strong> {{ student.guardian_contact }}</p>
+            <p><strong>Home Address:</strong> {{ student.home_address }}</p>
+
+            <p>
+                <strong>Application Status:</strong>
+                <span class="pending-status">
+                    {{ student.student_status }}
+                </span>
+            </p>
+
+        </div>
+
+        <hr>
+
+        <!-- Rector Decision Form -->
+
+        <h3 class="review-heading">Application Decision</h3>
+
+        <form method="POST" class="registration-form">
+
+            {% csrf_token %}
+
+            {% for field in form %}
+
+            <div class="form-field">
+
+                <label>{{ field.label }}</label>
+
+                {{ field }}
+
+                {% if field.help_text %}
+                <small>{{ field.help_text }}</small>
+                {% endif %}
+
+                {% for error in field.errors %}
+                <p class="field-error">{{ error }}</p>
+                {% endfor %}
+
+            </div>
+
+            {% endfor %}
+
+            {% if form.non_field_errors %}
+            <div class="field-error">
+                {{ form.non_field_errors }}
+            </div>
+            {% endif %}
+
+            <button type="submit" class="primary-button">
+                Submit Decision
+            </button>
+
+        </form>
+
+        <a href="{% url 'registration_requests' %}" class="back-link">
+            ← Back to Registration Requests
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,28 +1,65 @@
 {% extends "core/base.html" %}
 
 {% block title %}
-Student Registration
+Hostel Registration | Hostel Management System
 {% endblock %}
 
 {% block content %}
 
-<h2>Create Your Account</h2>
+<section class="form-page">
 
-<form method="POST">
+    <div class="form-card">
 
-    {% csrf_token %}
+        <span class="section-label">HOSTEL ADMISSION</span>
 
-    {{ form.as_p }}
+        <h1>Student Registration</h1>
 
-    <button type="submit">
-        Register
-    </button>
+        <p class="form-description">
+            Complete the form below to apply for hostel accommodation.
+            Your application will be reviewed by the Hostel Rector.
+        </p>
 
-</form>
+        <form method="POST" class="registration-form">
 
-<p>
-    Already have an account?
-    <a href="{% url 'login' %}">Login here</a>
-</p>
+            {% csrf_token %}
+
+            {{ form.non_field_errors }}
+
+            {% for field in form %}
+
+            <div class="form-field">
+
+                <label for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                </label>
+
+                {{ field }}
+
+                {% if field.help_text %}
+                <small>{{ field.help_text }}</small>
+                {% endif %}
+
+                {% for error in field.errors %}
+                <p class="field-error">{{ error }}</p>
+                {% endfor %}
+
+            </div>
+
+            {% endfor %}
+
+            <button type="submit" class="primary-button">
+                Submit Registration →
+            </button>
+
+        </form>
+
+        <p class="form-note">
+            Submitting this form does not guarantee hostel admission.
+            Your application must be approved by the Rector.
+        </p>
+
+    </div>
+
+</section>
 
 {% endblock %}
