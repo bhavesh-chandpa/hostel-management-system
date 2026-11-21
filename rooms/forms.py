@@ -12,6 +12,11 @@ class RoomForm(forms.ModelForm):
             "status": forms.Select(attrs={"class": "form-control"}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            self.fields["room_number"].disabled = True
+
     def clean_room_number(self):
         number = self.cleaned_data["room_number"]
         qs = Room.objects.filter(room_number=number)
@@ -50,9 +55,7 @@ class RoomAllocationForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["student"].queryset = Student.objects.filter(
-            student_status=Student.StudentStatus.ACTIVE
-        ).order_by("full_name")
+        self.fields["student"].queryset = Student.objects.filter(student_status=Student.StudentStatus.ACTIVE).order_by("full_name")
         self.fields["room_number"].queryset = Room.objects.filter(status=True).order_by("room_number")
 
     def clean(self):

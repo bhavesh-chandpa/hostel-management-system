@@ -3,47 +3,14 @@
 {% block title %}Student Dashboard | Hostel Management System{% endblock %}
 {% block page_css %}<link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}">{% endblock %}
 {% block content %}
-<section class="dashboard-section">
-    <div class="container">
-        <div class="page-heading">
-            <span class="eyebrow">STUDENT PORTAL</span>
-            <h1>Welcome, {{ student.full_name }}</h1>
-            <p>Your hostel information and student services in one place.</p>
-        </div>
-        <div class="dashboard-grid">
-            <article class="dashboard-card">
-                <span class="card-kicker">STUDENT PROFILE</span><h2>{{ student.full_name }}</h2>
-                <dl class="detail-list">
-                    <div><dt>Roll number</dt><dd>{{ student.roll_number }}</dd></div>
-                    <div><dt>Degree</dt><dd>{{ student.degree }}</dd></div>
-                    <div><dt>Year of study</dt><dd>{{ student.year_of_study }}</dd></div>
-                    <div><dt>Email</dt><dd>{{ student.email }}</dd></div>
-                </dl>
-            </article>
-            <article class="dashboard-card">
-                <span class="card-kicker">ROOM ALLOCATION</span>
-                {% if current_allocation %}
-                    <h2>Room {{ current_allocation.room_number_id }}</h2>
-                    <p class="large-value">Bed {{ current_allocation.bed_number }}</p>
-                    <p class="muted">Allocated {{ current_allocation.allocated_at|date:"d M Y" }}</p>
-                {% else %}
-                    <h2>Not allocated</h2><p class="muted">Your room has not been allocated yet. Please contact the Rector's office.</p>
-                {% endif %}
-            </article>
-            <article class="dashboard-card">
-                <span class="card-kicker">ACCOUNT STATUS</span>
-                <h2>{{ student.get_student_status_display }}</h2>
-                <p class="muted">Admission date: {{ student.hostel_admission_date|date:"d M Y"|default:"Not available" }}</p>
-            </article>
-        </div>
-        <div class="service-section">
-            <div class="section-title"><div><span class="eyebrow">STUDENT SERVICES</span><h2>Quick actions</h2></div></div>
-            <div class="service-grid">
-                <a class="service-card" href="{% url 'student_leave_list' %}"><span>01</span><strong>Leave applications</strong><small>Apply for leave and track decisions</small></a>
-                <a class="service-card" href="{% url 'student_complaints' %}"><span>02</span><strong>Complaints</strong><small>Submit a concern and view responses</small></a>
-                <a class="service-card" href="{% url 'active_notices' %}"><span>03</span><strong>Hostel notices</strong><small>Read current announcements</small></a>
-            </div>
-        </div>
-    </div>
-</section>
+<section class="dashboard-section"><div class="container">
+<div class="page-heading"><span class="eyebrow">STUDENT PORTAL</span><h1>Welcome, {{ student.full_name }}</h1><p>Your hostel information and student services in one place.</p></div>
+<div class="dashboard-grid">
+<article class="dashboard-card"><span class="card-kicker">STUDENT PROFILE</span><h2>{{ student.full_name }}</h2><dl class="detail-list"><div><dt>Roll number</dt><dd>{{ student.roll_number }}</dd></div><div><dt>Degree</dt><dd>{{ student.degree }}</dd></div><div><dt>Year of study</dt><dd>{{ student.year_of_study }}</dd></div><div><dt>Email</dt><dd>{{ student.email }}</dd></div></dl></article>
+<article class="dashboard-card"><span class="card-kicker">ROOM ALLOCATION</span>{% if current_allocation %}<h2>Room {{ current_allocation.room_number_id }}</h2><p class="large-value">Bed {{ current_allocation.bed_number }}</p><p class="muted">Allocated {{ current_allocation.allocated_at|date:"d M Y" }}</p>{% else %}<h2>Not allocated</h2><p class="muted">Your room has not been allocated yet. Please contact the Rector's office.</p>{% endif %}</article>
+<article class="dashboard-card"><span class="card-kicker">ACCOUNT STATUS</span><h2>{{ student.get_student_status_display }}</h2><p class="muted">Admission date: {{ student.hostel_admission_date|date:"d M Y"|default:"Not available" }}</p></article>
+</div>
+<div class="service-section"><div class="section-title"><div><span class="eyebrow">STUDENT SERVICES</span><h2>Quick actions</h2></div></div>
+<div class="service-grid"><a class="service-card" href="{% url 'student_leave_list' %}"><span>01</span><strong>Leave applications</strong><small>Apply for leave and track decisions</small></a><a class="service-card" href="{% url 'student_complaints' %}"><span>02</span><strong>Complaints</strong><small>Submit a concern and view responses</small></a><a class="service-card" href="{% url 'active_notices' %}"><span>03</span><strong>Hostel notices</strong><small>Read current announcements</small></a></div></div>
+</div></section>
 {% endblock %}

@@ -1,49 +1,7 @@
 {% extends "core/base.html" %}
-
-{% block title %}
-Registration Submitted
-{% endblock %}
-
+{% load static %}
+{% block title %}Application Submitted | Hostel Management System{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="{% static 'core/css/auth.css' %}">{% endblock %}
 {% block content %}
-
-<section class="form-page">
-
-    <div class="form-card success-card">
-
-        <span class="success-icon">✓</span>
-
-        <h1>Application Submitted!</h1>
-
-        <p>
-            Thank you, {{ student.full_name }}.
-            Your hostel registration application has been received.
-        </p>
-
-        <div class="application-details">
-
-            <p>
-                <strong>Application ID:</strong>
-                {{ student.student_id }}
-            </p>
-
-            <p>
-                <strong>Status:</strong>
-                <span class="pending-status">Pending Review</span>
-            </p>
-
-        </div>
-
-        <p class="form-note">
-            The Hostel Rector will review your application.
-            You can contact the hostel office for further information.
-        </p>
-
-        <a href="{% url 'home' %}" class="primary-button">
-            Back to Homepage
-        </a>
-
-    </div>
-
-</section>
-
+<section class="auth-section"><div class="auth-card success-card"><div class="success-mark">✓</div><span class="eyebrow">APPLICATION RECEIVED</span><h1>Application submitted</h1><p class="lead">Thank you, {{ student.full_name }}. Your hostel registration application has been received.</p><div class="application-summary"><div><span>Application ID</span><strong>#{{ student.student_id }}</strong></div><div><span>Current status</span><strong class="text-pending">Pending review</strong></div></div><p class="auth-footnote">The Hostel Rector will review your application. A student login account is created only after approval.</p><a class="button button-primary" href="{% url 'home' %}">Back to homepage</a></div></section>
 {% endblock %}

@@ -1,65 +1,11 @@
 {% extends "core/base.html" %}
-
-{% block title %}
-Hostel Registration | Hostel Management System
-{% endblock %}
-
+{% load static %}
+{% block title %}Hostel Registration | Hostel Management System{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="{% static 'core/css/auth.css' %}">{% endblock %}
 {% block content %}
-
-<section class="form-page">
-
-    <div class="form-card">
-
-        <span class="section-label">HOSTEL ADMISSION</span>
-
-        <h1>Student Registration</h1>
-
-        <p class="form-description">
-            Complete the form below to apply for hostel accommodation.
-            Your application will be reviewed by the Hostel Rector.
-        </p>
-
-        <form method="POST" class="registration-form">
-
-            {% csrf_token %}
-
-            {{ form.non_field_errors }}
-
-            {% for field in form %}
-
-            <div class="form-field">
-
-                <label for="{{ field.id_for_label }}">
-                    {{ field.label }}
-                </label>
-
-                {{ field }}
-
-                {% if field.help_text %}
-                <small>{{ field.help_text }}</small>
-                {% endif %}
-
-                {% for error in field.errors %}
-                <p class="field-error">{{ error }}</p>
-                {% endfor %}
-
-            </div>
-
-            {% endfor %}
-
-            <button type="submit" class="primary-button">
-                Submit Registration →
-            </button>
-
-        </form>
-
-        <p class="form-note">
-            Submitting this form does not guarantee hostel admission.
-            Your application must be approved by the Rector.
-        </p>
-
-    </div>
-
-</section>
-
+<section class="auth-section"><div class="auth-card auth-card-wide"><span class="eyebrow">HOSTEL ADMISSION</span><h1>Student registration</h1><p class="lead">Complete the form to apply for hostel accommodation. Your application will be reviewed by the Hostel Rector.</p>
+<form method="post" class="registration-grid" novalidate>{% csrf_token %}{% if form.non_field_errors %}<div class="form-errors full-span">{{ form.non_field_errors }}</div>{% endif %}
+{% for field in form %}<div class="form-field {% if field.name == 'home_address' %}full-span{% endif %}"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<small class="help-text">{{ field.help_text }}</small>{% endif %}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>{% endfor %}
+<div class="full-span"><button type="submit" class="button button-primary button-wide">Submit application <span aria-hidden="true">→</span></button></div></form>
+<p class="auth-footnote">Submitting an application does not guarantee admission. You will receive login access only after approval.</p></div></section>
 {% endblock %}

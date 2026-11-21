@@ -4,41 +4,23 @@
 {% block page_css %}<link rel="stylesheet" href="{% static 'rooms/css/rooms.css' %}">{% endblock %}
 {% block content %}
 <section class="management-section"><div class="container">
-    <div class="page-heading"><span class="eyebrow">RECTOR WORKSPACE</span><h1>Room management</h1><p>Add rooms, review occupancy and allocate available beds to active students.</p></div>
-    <div class="metrics-grid">
-        <article class="metric-card"><span>Total rooms</span><strong>{{ rooms|length }}</strong></article>
-        <article class="metric-card"><span>Active rooms</span><strong>{% for room in rooms %}{% if room.status %}{% with active_count=forloop.counter %}{% endwith %}{% endif %}{% endfor %}{{ rooms|length }}</strong><small>See status in the room list</small></article>
-        <article class="metric-card"><span>Current allocations</span><strong>{{ allocations|length }}</strong></article>
-    </div>
-    <div class="two-column">
-        <section class="panel"><div class="panel-heading"><div><span class="eyebrow">ROOM INVENTORY</span><h2>Add a room</h2></div></div>
-            <form method="post" class="form-stack" novalidate>{% csrf_token %}<input type="hidden" name="action" value="add_room">
-                {% if room_form.non_field_errors %}<div class="form-errors">{{ room_form.non_field_errors }}</div>{% endif %}
-                {% for field in room_form %}<div class="form-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>{% endfor %}
-                <button class="button button-primary" type="submit">Save room</button>
-            </form>
-        </section>
-        <section class="panel"><div class="panel-heading"><div><span class="eyebrow">BED ASSIGNMENT</span><h2>Allocate a room</h2></div></div>
-            <form method="post" class="form-stack" novalidate>{% csrf_token %}<input type="hidden" name="action" value="allocate_room">
-                {% if allocation_form.non_field_errors %}<div class="form-errors">{{ allocation_form.non_field_errors }}</div>{% endif %}
-                {% for field in allocation_form %}<div class="form-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>{% endfor %}
-                <button class="button button-primary" type="submit">Allocate bed</button>
-            </form>
-            <p class="form-hint">Only active students and active rooms are available for allocation.</p>
-        </section>
-    </div>
-    <section class="panel table-panel"><div class="panel-heading"><div><span class="eyebrow">ROOM INVENTORY</span><h2>Rooms and occupancy</h2></div></div>
-        <div class="table-wrap"><table><thead><tr><th>Room</th><th>Capacity</th><th>Occupied</th><th>Availability</th><th>Status</th><th>Action</th></tr></thead><tbody>
-        {% for room in rooms %}<tr><td><strong>{{ room.room_number }}</strong></td><td>{{ room.capacity }}</td><td>{{ room.occupied }}</td><td>{{ room.capacity|add:"-"|add:room.occupied }}</td><td><span class="status-pill {% if room.status %}status-active{% else %}status-inactive{% endif %}">{% if room.status %}Active{% else %}Under maintenance{% endif %}</span></td>
-        <td><form method="post" action="{% url 'toggle_room_status' room.room_number %}">{% csrf_token %}<button class="text-button" type="submit">{% if room.status %}Mark maintenance{% else %}Activate{% endif %}</button></form></td></tr>
-        {% empty %}<tr><td colspan="6" class="empty-cell">No rooms have been added yet.</td></tr>{% endfor %}
-        </tbody></table></div>
-    </section>
-    <section class="panel table-panel"><div class="panel-heading"><div><span class="eyebrow">CURRENT OCCUPANTS</span><h2>Room allocations</h2></div></div>
-        <div class="table-wrap"><table><thead><tr><th>Student</th><th>Roll number</th><th>Room</th><th>Bed</th><th>Allocated on</th></tr></thead><tbody>
-        {% for item in allocations %}<tr><td>{{ item.student.full_name }}</td><td>{{ item.student.roll_number }}</td><td>{{ item.room_number_id }}</td><td>{{ item.bed_number }}</td><td>{{ item.allocated_at|date:"d M Y" }}</td></tr>
-        {% empty %}<tr><td colspan="5" class="empty-cell">No active room allocations yet.</td></tr>{% endfor %}
-        </tbody></table></div>
-    </section>
+<div class="page-heading"><span class="eyebrow">RECTOR WORKSPACE</span><h1>Room management</h1><p>Add rooms, review occupancy and allocate available beds to active students.</p></div>
+<div class="metrics-grid"><article class="metric-card"><span>Total rooms</span><strong>{{ total_rooms }}</strong></article><article class="metric-card"><span>Active rooms</span><strong>{{ active_rooms }}</strong></article><article class="metric-card"><span>Current allocations</span><strong>{{ total_allocations }}</strong></article></div>
+<div class="two-column">
+<section class="panel"><div class="panel-heading"><div><span class="eyebrow">ROOM INVENTORY</span><h2>{% if editing_room %}Update room {{ editing_room.room_number }}{% else %}Add a room{% endif %}</h2></div></div>
+<form method="post" class="form-stack" novalidate>{% csrf_token %}<input type="hidden" name="action" value="{% if editing_room %}update_room{% else %}add_room{% endif %}">{% if room_form.non_field_errors %}<div class="form-errors">{{ room_form.non_field_errors }}</div>{% endif %}
+{% for field in room_form %}<div class="form-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>{% endfor %}
+<button class="button button-primary" type="submit">{% if editing_room %}Update room{% else %}Save room{% endif %}</button>{% if editing_room %}<a class="button button-secondary" href="{% url 'room_management' %}">Cancel editing</a>{% endif %}</form></section>
+<section class="panel"><div class="panel-heading"><div><span class="eyebrow">BED ASSIGNMENT</span><h2>Allocate a room</h2></div></div>
+<form method="post" class="form-stack" novalidate>{% csrf_token %}<input type="hidden" name="action" value="allocate_room">{% if allocation_form.non_field_errors %}<div class="form-errors">{{ allocation_form.non_field_errors }}</div>{% endif %}
+{% for field in allocation_form %}<div class="form-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>{% endfor %}
+<button class="button button-primary" type="submit">Allocate bed</button></form><p class="form-hint">Only active students and active rooms are available for allocation.</p></section>
+</div>
+<section class="panel table-panel"><div class="panel-heading"><div><span class="eyebrow">ROOM INVENTORY</span><h2>Rooms and occupancy</h2></div></div>
+<div class="table-wrap"><table><thead><tr><th>Room</th><th>Capacity</th><th>Occupied</th><th>Status</th><th>Manage</th></tr></thead><tbody>
+{% for room in rooms %}<tr><td><strong>{{ room.room_number }}</strong></td><td>{{ room.capacity }}</td><td>{{ room.occupied }} / {{ room.capacity }}</td><td><span class="status-pill {% if room.status %}status-active{% else %}status-inactive{% endif %}">{% if room.status %}Active{% else %}Under maintenance{% endif %}</span></td><td><div class="room-actions"><a class="text-button" href="{% url 'edit_room' room.room_number %}">Edit</a><form method="post" action="{% url 'toggle_room_status' room.room_number %}">{% csrf_token %}<button class="text-button" type="submit">{% if room.status %}Mark maintenance{% else %}Activate{% endif %}</button></form></div></td></tr>
+{% empty %}<tr><td colspan="5" class="empty-cell">No rooms have been added yet.</td></tr>{% endfor %}</tbody></table></div></section>
+<section class="panel table-panel"><div class="panel-heading"><div><span class="eyebrow">CURRENT OCCUPANTS</span><h2>Room allocations</h2></div></div>
+<div class="table-wrap"><table><thead><tr><th>Student</th><th>Roll number</th><th>Room</th><th>Bed</th><th>Allocated on</th></tr></thead><tbody>{% for item in allocations %}<tr><td>{{ item.student.full_name }}</td><td>{{ item.student.roll_number }}</td><td>{{ item.room_number_id }}</td><td>{{ item.bed_number }}</td><td>{{ item.allocated_at|date:"d M Y" }}</td></tr>{% empty %}<tr><td colspan="5" class="empty-cell">No active room allocations yet.</td></tr>{% endfor %}</tbody></table></div></section>
 </div></section>
 {% endblock %}
