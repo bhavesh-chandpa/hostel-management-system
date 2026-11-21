@@ -1,30 +1,21 @@
 {% extends "core/base.html" %}
-
-{% block title %}
-Student Login
-{% endblock %}
-
+{% load static %}
+{% block title %}Sign in | Hostel Management System{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="{% static 'core/css/auth.css' %}">{% endblock %}
 {% block content %}
-
-<h2>Login to Your Account</h2>
-
-<form method="POST">
-
-    {% csrf_token %}
-
-    {{ form.as_p }}
-
-    <button type="submit">
-        Login
-    </button>
-
-</form>
-
-<p>
-    Don't have an account?
-    <a href="{% url 'register' %}">
-        Register here
-    </a>
-</p>
-
+<section class="auth-section">
+    <div class="auth-card">
+        <span class="eyebrow">HOSTEL PORTAL</span>
+        <h1>Welcome back</h1>
+        <p class="lead">Sign in with the account provided by the hostel administration.</p>
+        <form method="post" class="form-stack" novalidate>
+            {% csrf_token %}
+            {% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
+            <div class="form-field"><label for="{{ form.username.id_for_label }}">Username</label>{{ form.username }}{% for error in form.username.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+            <div class="form-field"><label for="{{ form.password.id_for_label }}">Password</label>{{ form.password }}{% for error in form.password.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>
+            <button type="submit" class="button button-primary button-wide">Sign in</button>
+        </form>
+        <p class="auth-footnote">New applicant? <a href="{% url 'register' %}">Apply for hostel admission</a>.</p>
+    </div>
+</section>
 {% endblock %}

@@ -1,0 +1,11 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Leave Requests | Hostel Management System{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="{% static 'leave_management/css/leave.css' %}">{% endblock %}
+{% block content %}
+<section class="workflow-section"><div class="container"><div class="page-heading"><span class="eyebrow">RECTOR WORKSPACE</span><h1>Leave applications</h1><p>Review student requests and record an approval or rejection.</p></div>
+<div class="panel table-panel"><div class="table-wrap"><table><thead><tr><th>Student</th><th>Leave dates</th><th>Reason</th><th>Submitted</th><th>Status</th><th>Decision</th></tr></thead><tbody>
+{% for item in applications %}<tr><td><strong>{{ item.student.full_name }}</strong><small class="table-subtext">{{ item.student.roll_number }}</small></td><td>{{ item.from_date|date:"d M Y" }} – {{ item.to_date|date:"d M Y" }}</td><td>{{ item.reason }}</td><td>{{ item.applied_at|date:"d M Y" }}</td><td><span class="status-pill status-{{ item.status|lower }}">{{ item.status }}</span></td><td>{% if item.status == 'Pending' %}<div class="decision-actions"><form method="post" action="{% url 'decide_leave' item.leave_id %}">{% csrf_token %}<input type="hidden" name="decision" value="Approved"><button class="button button-small button-success" type="submit">Approve</button></form><form method="post" action="{% url 'decide_leave' item.leave_id %}">{% csrf_token %}<input type="hidden" name="decision" value="Rejected"><button class="button button-small button-danger" type="submit">Reject</button></form></div>{% else %}<small>{{ item.processed_by.full_name|default:"—" }}</small>{% endif %}</td></tr>
+{% empty %}<tr><td colspan="6" class="empty-cell">No leave applications have been submitted.</td></tr>{% endfor %}
+</tbody></table></div></div></div></section>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Submit Complaint | Hostel Management System{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="{% static 'complaints/css/complaints.css' %}">{% endblock %}
+{% block content %}
+<section class="workflow-section"><div class="container narrow-container"><div class="page-heading"><span class="eyebrow">STUDENT SERVICES</span><h1>Submit a complaint</h1><p>Describe the issue clearly so the Rector can review and respond.</p></div>
+<div class="panel"><form method="post" class="form-stack" novalidate>{% csrf_token %}{% if form.non_field_errors %}<div class="form-errors">{{ form.non_field_errors }}</div>{% endif %}
+{% for field in form %}<div class="form-field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}</div>{% endfor %}
+<div class="form-actions"><button type="submit" class="button button-primary">Submit complaint</button><a class="button button-secondary" href="{% url 'student_complaints' %}">Cancel</a></div></form></div></div></section>
+{% endblock %}
