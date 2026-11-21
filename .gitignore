@@ -1,18 +1,22 @@
-# Virtual environment
+# Python virtual environment and caches
 .venv/
-
-# Environment variables and secrets
-.env
-
-# Python cache
 __pycache__/
 *.py[cod]
+.pytest_cache/
 
-# Django database
-db.sqlite3
+# Secrets and environment
+.env
 
-# Collected static files
+# Databases and runtime output
+*.sqlite3
 staticfiles/
+media/
 
-# IDE settings
+# IDE and OS files
 .vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Generated archives
+*.zip

@@ -1,79 +1,8 @@
 {% extends "core/base.html" %}
-
-{% block title %}
-Registration Requests | Hostel Management System
-{% endblock %}
-
+{% load static %}
+{% block title %}Registration Requests | Hostel Management System{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="{% static 'core/css/staff.css' %}">{% endblock %}
 {% block content %}
-
-<section class="section section-light">
-
-    <div class="container">
-
-        <div class="section-heading">
-            <span class="section-label">RECTOR PANEL</span>
-            <h2>Registration Requests</h2>
-            <p>Review and manage pending hostel admission applications.</p>
-        </div>
-
-        {% if students %}
-
-        <div class="request-list">
-
-            {% for student in students %}
-
-            <article class="request-card">
-
-                <div class="request-info">
-
-                    <span class="section-label">
-                        APPLICATION #{{ student.student_id }}
-                    </span>
-
-                    <h3>{{ student.full_name }}</h3>
-
-                    <p>{{ student.email }}</p>
-
-                    <p>
-                        Roll Number: {{ student.roll_number }}
-                    </p>
-
-                    <p>
-                        Submitted:
-                        {{ student.submitted_at|date:"d M Y, h:i A" }}
-                    </p>
-
-                    <span class="pending-status">
-                        {{ student.student_status }}
-                    </span>
-
-                </div>
-
-                <div class="request-action">
-
-                    <a href="{% url 'review_registration' student.student_id %}" class="primary-button">
-                        Review Application →
-                    </a>
-
-                </div>
-
-            </article>
-
-            {% endfor %}
-
-        </div>
-
-        {% else %}
-
-        <div class="empty-state">
-            <h3>No Pending Applications</h3>
-            <p>There are currently no student registration requests to review.</p>
-        </div>
-
-        {% endif %}
-
-    </div>
-
-</section>
-
+<section class="workflow-section"><div class="container"><div class="page-heading"><span class="eyebrow">RECTOR WORKSPACE</span><h1>Registration requests</h1><p>Review pending applications and approve or reject hostel admission.</p></div>
+<div class="record-list">{% for student in students %}<article class="record-card"><div class="record-header"><div><span class="muted">APPLICATION #{{ student.student_id }} · {{ student.submitted_at|date:"d M Y, h:i A" }}</span><h2>{{ student.full_name }}</h2><p>{{ student.email }} · {{ student.roll_number }}</p></div><span class="status-pill status-pending">Pending</span></div><a href="{% url 'review_registration' student.student_id %}" class="button button-primary">Review application</a></article>{% empty %}<div class="empty-state"><h2>No pending applications</h2><p>There are no registration requests waiting for review.</p></div>{% endfor %}</div></div></section>
 {% endblock %}

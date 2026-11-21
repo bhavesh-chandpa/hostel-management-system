@@ -1,0 +1,5 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Hostel Notices | Hostel Management System{% endblock %}
+{% block page_css %}<link rel="stylesheet" href="{% static 'notices/css/notices.css' %}">{% endblock %}
+{% block content %}<section class="workflow-section"><div class="container"><div class="page-heading"><span class="eyebrow">HOSTEL ANNOUNCEMENTS</span><h1>Latest notices</h1><p>Important updates published by the hostel administration.</p></div><div class="notice-grid">{% for notice in notices %}<article class="notice-card"><span class="notice-date">{{ notice.posted_at|date:"d M Y · h:i A" }}</span><h2>{{ notice.title }}</h2><p>{{ notice.content|linebreaksbr }}</p><small>Posted by {{ notice.posted_by.full_name }}</small></article>{% empty %}<div class="empty-state"><h2>No active notices</h2><p>There are no current announcements.</p></div>{% endfor %}</div></div></section>{% endblock %}
