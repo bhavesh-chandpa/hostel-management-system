@@ -1,5 +1,4 @@
 from django import forms
-from django.db.models import Count, Q
 from accounts.models import Student
 from .models import Room, RoomAllocation
 
@@ -60,18 +59,13 @@ class RoomAllocationForm(forms.ModelForm):
         student = cleaned.get("student")
         room = cleaned.get("room_number")
         bed = (cleaned.get("bed_number") or "").strip()
-
         if student and RoomAllocation.objects.filter(student=student, is_current=True).exists():
             self.add_error("student", "This student already has a current room allocation.")
-
         if room and bed:
-            current = RoomAllocation.objects.filter(
-                room_number=room, is_current=True
-            )
+            current = RoomAllocation.objects.filter(room_number=room, is_current=True)
             if current.count() >= room.capacity:
                 self.add_error("room_number", "This room is already at full capacity.")
             if current.filter(bed_number__iexact=bed).exists():
                 self.add_error("bed_number", "This bed is already occupied.")
-
         cleaned["bed_number"] = bed
         return cleaned
